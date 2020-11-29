@@ -25,8 +25,7 @@ public class ResultExperts implements Serializable {
     }
 
     public String addComp(String par){
-        System.out.println("Cookie : " + par);
-        competition = par;
+       
         return "null?faces-redirect=true";
     }
 
