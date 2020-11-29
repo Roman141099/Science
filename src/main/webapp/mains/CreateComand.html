@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <head>
+        <script type="text/javascript">
+            function delete_cookie (cookie_name)
+            {
+                var cookie_date = new Date ( );  // Текущая дата и время
+                cookie_date.setTime ( cookie_date.getTime() - 1 );
+                document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
+            }
+            var CompetenseList = {
+                    'FrontendDeveloper':'FrontendDeveloper',
+                    'BackDeveloper':'BackDeveloper',
+                    'WebDesiner':'Веб Дизайнер',
+                    'Analist':'Аналитик',
+                    'FrontendDevelopersdsa':'FrontendDeveloperase',
+                    'BackDevelopersas':'BackDeveloperasd',
+                    'WebDesinerads':'Дизайн',
+                    'Analistsda':'Аналитика',
+                }
+            var InterestList = {
+                    'i1':'Компьютерные науки',
+                    'i2':'Инженерное дело',
+                    'i3':'Энергетика',
+                    'i4':'Физика и астрономия',
+                    'i5':'Математика',
+                    'i6':'Химия',
+                    'i7':'Материаловедение',
+                    'i8':'Медицина',
+                    'i9':'Бизнес',
+                    'i10':'Исскуство',
+                    'i11':'Мультидисциплинарный',
+                    'i12':'Менеджмент',
+                    'i13':'Экономика и финансы',
+                    'i14':'Иммунология и микробиология',
+                    'i15':'Фармакология, токсикология и фармацевтика',
+                }
+            var Sotrudniki =["Елизаров Игорь Маркович", "Ушаков Елисей Михайлович", "Борисова Александра Владимировна", "Самсонова Агата Александровна", "Матвеева Василиса Кирилловна", "Романов Алексей Васильевич", "Ковалев Алексей Владиславович", "Краснова Маргарита Мироновна", "Троицкий Глеб Давидович", "Попова Ольга Николаевна"," Белов Иван Маркович", "Андрианова Полина Адамовна", "Титова Маргарита Никитична", "Кузнецов Александр Матвеевич", "Попов Илья Михайлович", "Волков Марк Романович", "Лазарев Клим Петрович", "Румянцев Тимур Владимирович", "Никифорова Анастасия Артуровна", "Никитин Кирилл Максимович","Яковлев Степан Никитич","Филиппова Амина Давидовна", "Ежова Алия Артёмовна", "Костин Николай Степанович", "Панова Виктория Максимовна", "Зуева Виктория Валерьевна", "Смирнова Мира Станиславовна", "Куприянова Амина Родионовна", "Давыдова Марьям Ярославовна", "Иванов Роман Денисович"]
+            var comp=0;
+            var interest=0;
+            var FreeInterest={};
+            var FreeCompetense={};
+            Object.assign(FreeCompetense, CompetenseList);
+            Object.assign(FreeInterest, InterestList);
+            var SelectedCompetense = {};
+            var SelectedInterest = {};
+                // console.log(CompetenseList);
+                // console.log(FreeCompetense); 
+                // console.log(SelectedCompetense);
+            var closeID=(id)=>{
+                document.getElementById(id).style.display = "none";
+            }
+            var openID=(id)=>{
+                document.getElementById(id).style.display = "block";
+            }
+            var RemoveFromSelected=(element)=>{
+                var id=element.parentNode.id.substring(0, element.parentNode.id.length - 1);
+                FreeCompetense[id] = CompetenseList[id];
+                addFreeCompetent(id,CompetenseList[id]);
+                delete SelectedCompetense[element.id];
+                removeInputFromForm(id);
+                document.getElementById(element.parentNode.id).remove();            
+            }
+            var SelectCompetent=(element)=>{
+                SelectedCompetense[element.id] = CompetenseList[element.id];
+                addSelectedCompetent(element.id+'S',CompetenseList[element.id]);
+                addInputToForm('comp'+comp,element.id,CompetenseList[element.id]);
+                comp++;
+                delete FreeCompetense[element.id];                              
+                document.getElementById(element.id).remove();
+            }
+            var RemoveFromSelectedInterest=(element)=>{
+                var id=element.parentNode.id.substring(0, element.parentNode.id.length - 1);
+                FreeInterest[id] = InterestList[id];
+                addFreeInterest(id,InterestList[id]);
+                delete SelectedInterest[element.id];
+                removeInputFromForm(id);
+                document.getElementById(element.parentNode.id).remove();            
+            }
+            var SelectInterest=(element)=>{
+                SelectedInterest[element.id] = InterestList[element.id];
+                addSelectedInterest(element.id+'S',InterestList[element.id]);
+                addInputToForm('interest'+interest,element.id,InterestList[element.id]);
+                interest++;
+                delete FreeInterest[element.id];                              
+                document.getElementById(element.id).remove();
+            }
+            var getRandomInt=(max)=>{
+                return Math.floor(Math.random() * Math.floor(max));
+            }
+            var addSelectedCompetent=(id,Name)=>{
+                var ret='<div id='+id+' class="SelectedCompetense">'+Name+'<div class="DeleteFromSelected" onclick="RemoveFromSelected(this)">-</div></div>';
+                document.getElementById('SelectedCompeties').innerHTML += ret;
+            }
+            var addFreeCompetent=(id,Name)=>{
+                var ret='<div id='+id+' class="Competense" onclick="SelectCompetent(this)">'+Name+'</div>';
+                document.getElementById('FreeCompeties').innerHTML += ret;
+            }
+            var addSelectedInterest=(id,Name)=>{
+                var ret='<div id='+id+' class="SelectedCompetense">'+Name+'<div class="DeleteFromSelected" onclick="RemoveFromSelectedInterest(this)">-</div></div>';
+                document.getElementById('SelectedInterest').innerHTML += ret;
+            }
+            var addFreeInterest=(id,Name)=>{
+                var ret='<div id='+id+' class="Competense" onclick="SelectInterest(this)">'+Name+'</div>';
+                document.getElementById('FreeInterest').innerHTML += ret;
+            }
+            var addInputToForm=(id,key,Name)=>{
+                var ret='<input id="'+key+'input" name='+id+' type="hidden" value="'+Name+'" >';
+                document.cookie = id+'='+Name;
+                document.getElementById('CreateComand').innerHTML += ret;
+            }
+            var removeInputFromForm=(key)=>{
+                delete_cookie(document.getElementById(key+'input').name);
+                document.getElementById(key+'input').remove();
+            }
+            var PrintCompetenseList=(CompetenseList)=>{
+                for (let key in InterestList) {
+                    addFreeInterest(key,InterestList[key]);
+                }
+                for (let key in CompetenseList) {
+                    addFreeCompetent(key,CompetenseList[key]);
+                }
+            }
+            var OpenClosediv=(div)=>{
+                if(div.classList.contains('ExpertSmall')){
+                    div.classList.remove('ExpertSmall'); 
+                    div.classList.add('ExpertBig');
+                    return;
+                }
+                div.classList.remove('ExpertBig'); 
+                div.classList.add('ExpertSmall');
+            }
+            window.onload = function(){
+                PrintCompetenseList(CompetenseList);
+
+            }
+            var selectPeoples=()=>{
+                var selected=[];
+                document.getElementById('LocExp').innerHTML='';
+                for(var i=0;i<5;i++){
+                    var randomnum = getRandomInt(Sotrudniki.length);
+                    for(var j=i;j<5;j++){
+                        if(selected[j]==randomnum)return;
+                    }
+                    var out='<div class="Expert ExpertSmall" onclick="OpenClosediv(this)">'+Sotrudniki[randomnum]+'<br></div>';
+                    document.getElementById('LocExp').innerHTML+=out;
+                }
+            }
+        </script>
+        <style type="text/css">
+            a{
+                text-decoration: none;
+            }
+            a:hover{
+                font-weight: bold;
+            }
+            #autorise{
+                width: calc(100% - 8px);
+                height: 14px;
+                padding: 4px;
+                font-family: arial;
+                font-size: 14px;
+                background: #f8f9fa;          
+            }
+            #login{
+                float: right;
+                margin-right: 34px;
+            }
+            #all{
+                width: 100%;
+                height: 95vh;
+                background: #f8f9fa;
+            }
+            #MainMenu{
+                width: calc(100% - 60px);
+                margin-left: 30px;
+                height: 75px;
+                border-radius: 10px;
+                background: linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%);
+            }
+            #SiteSearch{
+                margin-top: calc(37.5px - 18.75px);
+                float: right;
+                margin-right: 30px;
+                height: 50%;
+                width: 50px;
+                background: #fff;
+                border-radius: 5px;
+                font-size: 18px;
+                color: #021B79;
+                transition: 0.5s;
+            }
+            #SiteSearch:focus{
+                outline: none;
+                width: 300px;
+            }
+            .MenuButton{
+                width: 150px;
+                height: 18px;
+                margin: 10px;
+                color: #fff;
+                padding: calc(75px/2 - 10px - 9px) 0;
+                font-family: arial;
+                font-size: 18px;
+                text-transform: uppercase;
+                float: left;
+                text-align: center;
+                font-weight: bold;
+                background-size: 200% auto;
+                background-image: linear-gradient(to right, #ffffff 0%,#ffffff 70%, #9708CC 100%); /* Градиент для текста */
+                -webkit-background-clip: text; /* Обрезаем фон по тексту */
+                -webkit-text-fill-color: transparent; /* Прозрачный текст */
+                transition: 0.5s;
+            }
+            .MenuButton:hover{
+                cursor: pointer;
+                background-position: right center;
+            }
+            .VerticalLine{
+                height: 65px;
+                width: 2px;
+                margin: 5px 0;
+                border-radius: 1px;
+                float: left;
+                background: linear-gradient(to bottom, rgba(256,256,256,0) 0%, #ffffff  50%, rgba(256,256,256,0) 100%);
+            }
+            #CreateComand{
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                width: calc(100% - 60px - 20px - 10px);
+                height: calc(100% - 125px);
+                float: left;
+                margin-top: 15px;
+                margin-left: 30px;
+                background: 
+                    linear-gradient(#fff,#fff) padding-box, /*this is your grey background*/
+                    linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%) border-box;
+                padding:10px;
+                border: 5px solid transparent;
+                border-radius:20px;
+                display:inline-block;
+                float:left;
+                overflow: auto;
+            }
+            #Left{
+                width: calc(100%/4 - 20px);
+                height: calc(100% - 20px);
+                margin: 10px;
+                float:left;                
+            }
+            #middle{
+                width: calc(100%/4 - 20px);
+                height: calc(100% - 20px);
+                margin: 10px;
+                float:left;                
+            }
+            #Right{
+                width: calc(100%/2 - 20px);
+                height: calc(100% - 20px);
+                margin: 10px;
+                float:left;                
+            }
+            .InputField{
+                padding:15px;
+                width: calc(100% - 30px);
+                float: left;
+                color: #120a8f;
+                font-family: arial;
+                font-size: 24px;
+                margin-bottom: 10px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                border-radius:20px;
+            }
+            .SelectForm{
+                width: calc(100% - 4px);                
+                height: 30px;                
+                font-family: arial;
+                font-size: 14px;
+                border-radius:7px;
+                border-color: #43CBFF;
+                border-width: 2px;
+                transition: 0.5s;    
+            }
+            .CompetenseSelect{
+                width: calc(100% - 20px);
+                margin: 10px 0;
+                padding: 10px;
+                height: calc(50% - 60px - 30px);
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                border-radius:20px;
+                overflow: auto;
+            }
+            .SelectForm:focus{
+                outline: none;
+                border-color: #9708CC
+            }
+            .SelectForm:hover{
+                cursor: pointer;
+            }
+            .Competense{                
+                box-shadow: 0 0 10px rgba(0,0,0,0.15);
+                background: #ddd;
+                border-radius:7px;
+                margin: 4px;
+                padding: 3px 15px;
+                width: calc(100% - 8px - 30px);
+                float: left;
+                color: #120a8f;
+                font-family: arial;
+                font-size: 18px;
+                transition: 0.5s;
+            }
+            .Competense:hover{
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                background: #f1f1f1;
+                cursor: pointer;
+            }
+            .SelectedCompetense{
+                box-shadow: 0 0 10px rgba(0,0,0,0.15);
+                background: #ddd;
+                border-radius:7px;
+                margin: 4px;
+                padding: 3px 15px;
+                width: calc(100% - 8px - 30px);
+                float: left;
+                color: #120a8f;
+                font-family: arial;
+                font-size: 18px;
+            }
+            .DeleteFromSelected{
+                float: right;
+                color: #120a8f;
+                font-size: 18px;
+            }
+            .DeleteFromSelected:hover{
+                cursor: pointer;
+                font-weight: bold;
+            }
+            .SelectInterest{
+                padding:15px;
+                width: calc(100% - 30px);
+                height: calc(50% - 53px - 30px);
+                float: left;
+                color: #120a8f;
+                font-family: arial;
+                font-size: 24px;
+                margin:10px 0;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                border-radius:20px;
+                overflow-y: auto;
+            }
+            .SelectButton {
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                width: calc(100%);
+                height: 75px;
+                padding: 15px 45px;
+                text-align: center;
+                text-transform: uppercase;
+                font-size: calc(18px + (18 - 14) * ( (100vw - 480px) / ( 1024 - 480) ));
+                transition: 0.5s;
+                background-size: 200% auto;
+                background-image: linear-gradient(to right, #43CBFF 0%, #9708CC 51%, #43CBFF 100%);
+                border: 0px solid transparent;
+                border-radius: 10px;
+                display: block;
+                color: #fff;
+            }
+            .SelectButton:hover {
+                cursor: pointer;
+                background-position: right center;
+                color: #fff;
+                text-decoration: none;
+            }
+            .SelectButton:focus{
+                outline: none;
+            }
+            .SelectExpert{
+                padding:15px;
+                width: calc(100% - 30px);
+                height: calc(50% - 30px - 10px);
+                float: left;
+                color: #120a8f;
+                font-family: arial;
+                font-size: 24px;
+                margin:10px 0;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                border-radius:20px;
+                overflow-y: auto;
+            }
+            .Expert{
+                box-shadow: 0 0 10px rgba(0,0,0,0.15);
+                background: #ddd;
+                border-radius:7px;
+                margin: 4px;
+                padding: 5px 15px;
+                width: calc(100% - 8px - 30px);
+                float: left;
+                color: #120a8f;
+                font-family: arial;
+                font-size: 18px;
+                overflow: hidden;
+            }
+            #Exp,#LocExp{
+                display: none;
+            }
+            .Expert:hover{
+                cursor: pointer;
+            }
+            .ExpertSmall{height: 18px;}
+            .ExpertBig{
+                min-height: 18px;
+                background: #e3e3e3;
+            }
+            .ExpertSpoiler{
+                transition: 0.5s;
+                border: none;
+            }      
+            ::-webkit-scrollbar{
+                width: 7px;
+                height: 12px;
+            }
+            ::-webkit-scrollbar-track{
+                -webkit-box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0) inset;
+                background-color: rgba(0, 0, 0, 0);
+                border-radius: 10px;
+            }
+            ::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                background: #120aff;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="autorise">
+            <div id="login"><a href="login.html">Войдите</a> или <a href="Register.html">авторизируйтесь</a></div>
+        </div>
+        <div id="all">
+            <div id="MainMenu">
+                <a href="index.html"><div class="MenuButton">Профиль</div></a>
+                <div class="VerticalLine"></div>
+                <a href="Statistic.html"><div class="MenuButton">Статистика</div></a>
+                <div class="VerticalLine"></div>
+                <a href="maneger.html"><div class="MenuButton">Модерация</div></a>
+                <div class="VerticalLine"></div>
+                <a href="CreateComand.html"><div class="MenuButton">Команды</div></a>
+                <div class="VerticalLine"></div>
+                <!-- <input type="text" name="SiteSearch" id="SiteSearch" placeholder="Поиск"></input> -->
+                <!-- <img src="img/rgd_emblem.png" onclick="openID('off');">  -->
+                <!-- <div id="off" onclick="GetZapros();">                
+                </div> -->               
+            </div>
+            <div id="CreateComand">
+                <div id="Left">
+                    <div class="InputField">
+                        <div style="margin-bottom: 5px">Ключевые слова</div>         
+                        <input type="text" name="Name" placeholder="Введите название" class="SelectForm">
+                    </div>
+                    <div class="InputField CompetenseSelect">
+                        <div style="margin-left: 4px">Компетенции</div>
+                        <div id="FreeCompeties">         
+                        </div>
+                    </div>
+                    <div class="InputField CompetenseSelect">
+                        <div style="margin-left: 4px">Выбранные компетенции</div>
+                        <div id="SelectedCompeties">
+                        </div>
+                    </div>
+                </div>
+                <div id="middle">
+                    <div class="SelectInterest" style="margin-top: 0px">
+                        Научные интересов
+                        <div id="FreeInterest">         
+                        </div>
+                    </div>
+                    <div class="SelectInterest">
+                        Выбранные интересы
+                        <div id="SelectedInterest">
+                        </div>
+                    </div>
+                    <input onclick="openID('Exp'); openID('LocExp'); selectPeoples();" type="button" value="Найти экспертов"  class="InputField SelectButton">
+                </div>
+                <div id="Right">
+                    <div class="SelectExpert" style="margin-top: 0px">
+                        Эксперты Scopus
+                        <div id="Exp">
+                            <div class="Expert ExpertSmall" onclick="OpenClosediv(this)">
+                                Sidorov, A.A.<br>
+                                Skopus Id: 7201652201<br>  
+                                Цитирования: 16377<br>
+                                Индекс Хирша: 67<br> 
+                                Ссылочка на профиль Skopus: <a target="_blank" href="https://www.scopus.com/authid/detail.uri?authorId=7201652201" >Перейти</a><br>                               
+                            </div>
+                            <div class="Expert ExpertSmall" onclick="OpenClosediv(this)">
+                                Zaitsev, A.B.<br>
+                                Skopus Id: 7102921078<br>  
+                                Цитирования: 202<br>
+                                Индекс Хирша: 6<br> 
+                                Ссылочка на профиль Skopus: <a target="_blank" href="https://www.scopus.com/authid/detail.uri?authorId=7102921078" >Перейти</a><br>                               
+                            </div>
+                            <div class="Expert ExpertSmall" onclick="OpenClosediv(this)">
+                                Shabanov, A.Yu.<br>
+                                Skopus Id: 9241877000<br>  
+                                Цитирования: 351<br>
+                                Индекс Хирша: 5<br> 
+                                Ссылочка на профиль Skopus: <a target="_blank" href="https://www.scopus.com/authid/detail.uri?authorId=9241877000" >Перейти</a><br>                               
+                            </div>
+                            <div class="Expert ExpertSmall" onclick="OpenClosediv(this)">
+                                Galyshev, Yu.V.<br>
+                                Skopus Id: 6507300035<br>  
+                                Цитирования: 285<br>
+                                Индекс Хирша: 5<br> 
+                                Ссылочка на профиль Skopus: <a target="_blank" href="https://www.scopus.com/authid/detail.uri?authorId=6507300035" >Перейти</a><br>                               
+                            </div>                            
+                            
+                            <div class="Expert ExpertSmall" onclick="OpenClosediv(this)">
+                                Nikodijevi, M.<br>
+                                Skopus Id: 56516854800<br>  
+                                Цитирования: 5<br>
+                                Индекс Хирша: 1<br> 
+                                Ссылочка на профиль Skopus: <a target="_blank" href="https://www.scopus.com/authid/detail.uri?authorId=56516854800" >Перейти</a><br>                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="SelectExpert">
+                        Сотрудники университета
+                        <div id="LocExp">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

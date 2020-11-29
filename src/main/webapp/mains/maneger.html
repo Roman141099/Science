@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" href="style.css">
+    <script src="main.js"></script> -->
+    <head>
+        <script type="text/javascript">
+            var closeID=(id)=>{
+                document.getElementById(id).style.display = "none";
+            }
+            var openID=(id)=>{
+                document.getElementById(id).style.display = "block";
+            }
+            var GetZapros=()=>{
+                var request = new XMLHttpRequest();
+                function reqReadyStateChange() {
+                    if (request.status == 200) {
+                        document.getElementById("getResult").innerHTML=request.responseText;
+                    }
+                }
+                // строка с параметрами для отправки
+                var params = "firstnum=" + 31+ "&Secondnum=" + 412;
+                request.open("GET", "getResult.php?"+params);
+                request.onreadystatechange = reqReadyStateChange;
+                request.send();
+            }
+            var DifOpasity=(id1,id2)=>{
+                document.getElementById(id2).style.opacity='0.5';
+                document.getElementById(id1).style.opacity='1';
+            }
+            var CompetenseList = {
+                    'FrontendDeveloper':'FrontendDeveloper',
+                    'BackDeveloper':'BackDeveloper',
+                    'WebDesiner':'Веб Дизайнер',
+                    'Analist':'Аналитик',
+                    'FrontendDevelopersdsa':'FrontendDeveloperase',
+                    'BackDevelopersas':'BackDeveloperasd',
+                    'WebDesinerads':'Дизайн',
+                    'Analistsda':'Аналитика',
+                }
+            window.onload = function(){
+                for (let key in CompetenseList) {
+                    var ret='<input name='+key+' type="hidden" value='+CompetenseList[key]+' >';
+                    document.getElementById('SearchForm').innerHTML += ret;
+                }
+            }
+        </script>
+        <style type="text/css">
+            a{
+                text-decoration: none;
+            }
+            a:hover{
+                font-weight: bold;
+            }
+            #autorise{
+                width: calc(100% - 8px);
+                height: 14px;
+                padding: 4px;
+                font-family: arial;
+                font-size: 14px;
+                background: #f8f9fa;          
+            }
+            #login{
+                float: right;
+                margin-right: 34px;
+            }
+            #all{
+                width: 100%;
+                height: 95vh;
+                background: #f8f9fa;
+            }
+            #MainMenu{
+                width: calc(100% - 60px);
+                margin-left: 30px;
+                height: 75px;
+                border-radius: 10px;
+                background: linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%);
+            }
+            .MenuButton{
+                width: 150px;
+                height: 18px;
+                margin: 10px;
+                color: #fff;
+                padding: calc(75px/2 - 10px - 9px) 0;
+                font-family: arial;
+                font-size: 18px;
+                text-transform: uppercase;
+                float: left;
+                text-align: center;
+                font-weight: bold;
+                background-size: 200% auto;
+                background-image: linear-gradient(to right, #ffffff 0%,#ffffff 70%, #9708CC 100%); /* Градиент для текста */
+                -webkit-background-clip: text; /* Обрезаем фон по тексту */
+                -webkit-text-fill-color: transparent; /* Прозрачный текст */
+                transition: 0.5s;
+            }
+            .MenuButton:hover{
+                cursor: pointer;
+                background-position: right center;
+            }
+            .VerticalLine{
+                height: 65px;
+                width: 2px;
+                margin: 5px 0;
+                border-radius: 1px;
+                float: left;
+                background: linear-gradient(to bottom, rgba(256,256,256,0) 0%, #ffffff  50%, rgba(256,256,256,0) 100%);
+            }
+            #SiteSearch{
+                margin-top: calc(37.5px - 18.75px);
+                float: right;
+                margin-right: 30px;
+                height: 50%;
+                width: 50px;
+                background: #fff;
+                border-radius: 5px;
+                font-size: 18px;
+                color: #021B79;
+                transition: 0.5s;
+            }
+            #SiteSearch:focus{
+                outline: none;
+                width: 300px;
+            }
+            #off{
+                width: 75px;
+                height: 75px;
+                background: #ff6666;
+                float:right;
+            }
+            #off:hover{
+                cursor: pointer;
+            }
+            #getResult{
+                width: 100%;
+                height: 75px;
+                background: #aa66aa; 
+            }
+            #SearchForm{
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                width: 20%;
+                min-height: calc(100% - 125px);
+                float: left;
+                margin-top: 15px;
+                margin-left: 30px;
+                margin-right: 5px;
+                background: 
+                    linear-gradient(#fff,#fff) padding-box, /*this is your grey background*/
+                    linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%) border-box;
+                padding:10px;
+                border: 5px solid transparent;
+                border-radius:20px;
+                display:inline-block;
+                float:left;
+            }
+            #SearchResult{
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                width: calc(100% - 20% - 60px - 10px - 40px);
+                height: calc(100% - 105px);
+                margin-top: 15px;
+                margin-left: 5px;
+                margin-right: 30px;
+                background: 
+                    linear-gradient(#fff,#fff) padding-box, /*this is your grey background*/
+                    linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%) border-box;
+                border: 5px solid transparent;
+                border-radius:20px;
+                display:inline-block;
+            }
+            #DisplayData{
+                width: calc(100% - 20px);
+                padding: 10px;
+                padding-top: 0px;
+                height: calc(100% - 20px - 44px);
+                border-radius: 30px;
+                overflow: auto;
+            }
+            .FormBlok{
+                width: 100%;
+                margin-top: 0px;
+                overflow: hidden;
+            }
+            .TitleText{
+                text-align: left;
+                font-family: arial;
+                font-size: 24px;
+            }
+            .SelectForm{
+                margin-top:5px;
+                width: 100%;
+                height: 30px;
+                font-family: arial;
+                font-size: 14px;
+                border-radius: 5px;
+                border-color: #43CBFF;
+                border-width: 2px;
+                transition: 0.5s;    
+            }
+            .SelectForm:focus,.SelectDataType:focus{
+                outline: none;
+                border-color: #9708CC
+            }
+            .SelectForm:hover,.SelectDataType:hover{
+                cursor: pointer;
+            }
+            hr.style-one {
+                    border: 0;
+                    clear:both;
+                    display:block;
+                    width: 100%;               
+                    height: 3px;
+                    background: -webkit-linear-gradient(left, #ddddff, #7777ff, #ddddff);
+                    margin-top: 13px;
+            }
+            .SelectButton{
+                width: 100%;
+                height: 50px;
+                margin-top: 5px; 
+                border-radius: 10px;
+                background-size: 200% auto;
+                background-image: linear-gradient(to right, #43CBFF 0%, #9708CC 51%, #43CBFF 100%);
+                text-transform: uppercase;
+                font-size: 20px;
+                transition: 0.5s;
+                color: #fff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                border: 0px solid transparent;   
+            }
+            .SelectButton:hover{
+                cursor: pointer;
+                background-position: right center;
+            }
+            .SelectButton:focus{
+                outline: none;
+            }
+            ::-webkit-scrollbar{
+                width: 15px;
+                height: 12px;
+            }
+            ::-webkit-scrollbar-track{
+                -webkit-box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0) inset;
+                background-color: rgba(0, 0, 0, 0);
+                border-radius: 10px;
+            }
+            ::-webkit-scrollbar-thumb{
+                border-radius: 10px;
+                background: #9708CC;
+            }
+            .SelectDataType{
+                margin-top:5px;
+                width: calc(100% - 10px); 
+                height: 30px;
+                font-family: arial;
+                font-size: 14px;
+                border-radius: 5px;
+                border-color: #43CBFF;
+                border-width: 2px;
+                transition: 0.5s;
+                margin-left: 5px; 
+                margin-right: 5px;                  
+            }
+            #SelectVieBox{
+                width: calc(100% - 20px - 20px);
+                margin: 0 10px;
+                height: 24px;
+                padding: 10px;
+                padding-bottom: 0px;
+            }
+            .VieSelector{
+                margin-right: 15px;
+              float: right;  
+            }            
+            .VieSelector:hover{
+                cursor: pointer;                
+            }    
+            table{
+                margin-top: 5px;
+                margin-bottom: 5px;
+                width: 100%;
+                text-align: center;
+                border: 1px solid #69c;
+                border-radius: 10px;
+            }
+            .Autor{
+                width: 15% 
+            }
+            .Rang{
+                width: 15% 
+            }
+            .TypeOfActivity{
+                width: 20% 
+            }
+            .Critery{
+                width: 25% 
+            }
+            .Date{
+                width: 10% 
+            }
+            .Status{
+                width: 7.5% 
+            }
+            .Points{
+                width: 7.5%  
+            }   
+            .DataArticle{
+                width: calc(100%/3 - 25px); 
+                margin: 10px;
+                height: 300px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                border: 2.5px solid transparent;
+                border-radius:20px;
+                float: left;
+            }
+            .GreenBorder{
+                 background: 
+                    linear-gradient(#fff,#fff) padding-box, /*this is your grey background*/
+                    linear-gradient( 135deg, #48b812 10%, #296e08 100%) border-box;
+            }
+            .YellowBorder{
+                background: 
+                    linear-gradient(#fff,#fff) padding-box, /*this is your grey background*/
+                    linear-gradient( 135deg, #ffff12 10%, #d9d600 100%) border-box;
+            }
+            .RedBorder{
+                background: 
+                    linear-gradient(#fff,#fff) padding-box, /*this is your grey background*/
+                    linear-gradient( 135deg, #ff0e0e 10%, #c20e0e 100%) border-box;
+            }
+            #BlockData{display: none}
+            th {
+                font-weight: normal;
+                color: #039;
+                padding: 10px 15px;
+            }
+            td {
+                color: #669;
+                border-top: 1px solid #e8edff;
+                padding: 10px 15px;
+            }
+            tr:nth-child(2n) {background: #e8edff;}
+        </style>
+    </head>
+    <body>
+        <div id="autorise">
+            <div id="login"><a href="login.html">Войдите</a> или <a href="Register.html">Зарегистрируйтесь</a></div>
+        </div>
+        <div id="all">
+            <div id="MainMenu">
+                <a href="index.html"><div class="MenuButton">Профиль</div></a>
+                <div class="VerticalLine"></div>
+                <a href="Statistic.html"><div class="MenuButton">Статистика</div></a>
+                <div class="VerticalLine"></div>
+                <a href="maneger.html"><div class="MenuButton">Модерация</div></a>
+                <div class="VerticalLine"></div>
+                <a href="CreateComand.html"><div class="MenuButton">Создать пати</div></a>
+                <div class="VerticalLine"></div>
+                <!-- <input type="text" name="SiteSearch" id="SiteSearch" placeholder="Поиск"></input> -->
+                <!-- <img src="img/rgd_emblem.png" style="float: right; height: calc(100% - 20px); margin-top: 10px; margin-right: 15px">  -->
+                <!-- <div id="off" onclick="GetZapros();">                
+                </div> -->               
+            </div>
+            <form id="SearchForm">
+                <div class="FormBlok" style="margin-top: 15px">
+                    <div class="TitleText">
+                        Автор
+                    </div>
+                    <input type="text" name="Name" placeholder="Введите имя" class="SelectForm" style="width: calc(100% - 10px)">
+                    <hr class="style-one">
+                </div>
+                <div class="FormBlok">
+                    <div class="TitleText">
+                        Должность   
+                    </div>
+                    <select name="select1" size="1" class="SelectForm" >
+                            <option selected value="s1">Статья Web of Sciense</option>
+                            <option value="s2">Статья Scopus</option>
+                            <option value="s3">Участие в работе экспертных советов</option>
+                            <option value="s4">Защита кандидатской диссертации</option>
+                            <option value="s4">Защита докторской диссертации</option>
+                    </select>
+                    <hr class="style-one">
+                </div>
+                <div class="FormBlok">
+                    <div class="TitleText">
+                        Вид деятельности
+                    </div>
+                    <select name="select2" size="1" class="SelectForm" >
+                            <option selected value="s1">Культурно-творческая деятельность</option>
+                            <option value="s2">Научно-исследовательская деятельность</option>
+                            <option value="s3">Общественная деятельность</option>
+                            <option value="s4">Спортивная деятельность</option>
+                            <option value="s4">Учебная деятельность</option>
+                    </select>
+                    <hr class="style-one">
+                </div>
+                <div class="FormBlok">
+                    <div class="TitleText">
+                        Критерий
+                    </div>
+                    <select name="select1" size="1" class="SelectForm" >
+                            <option selected value="s1">Статья Web of Sciense</option>
+                            <option value="s2">Статья Scopus</option>
+                            <option value="s3">Участие в работе экспертных советов</option>
+                            <option value="s4">Защита кандидатской диссертации</option>
+                            <option value="s4">Защита докторской диссертации</option>
+                    </select>
+                    <hr class="style-one">
+                </div>
+                <div class="FormBlok">
+                    <div class="TitleText">
+                        Период
+                    </div>
+                    <select name="dateBegin" size="1" id="selectdateBegin" class="SelectForm">
+                        <option selected disabled >Начало</option>
+                        <option value="1half2019">1 полугодие 2019</option>
+                        <option value="2half2019">2 полугодие 2019</option>
+                        <option value="1half2020">1 полугодие 2020</option>
+                        <option value="2half2020">2 полугодие 2020</option>
+                    </select>
+                    <select name="date" size="1" id="selectdateEnd" class="SelectForm">
+                        <option selected disabled >Конец</option>
+                        <option value="1half2019">1 полугодие 2019</option>
+                        <option value="2half2019">2 полугодие 2019</option>
+                        <option value="1half2020">1 полугодие 2020</option>
+                        <option value="2half2020">2 полугодие 2020</option>
+                    </select>
+                    <hr class="style-one">
+                </div>
+                <input type="submit" value="Применить" class="SelectButton">
+            </form>
+            <div id="SearchResult">
+                <div id="SelectVieBox">
+                        <svg id="Bl" onclick="closeID('TableData');openID('BlockData'); DifOpasity('Bl','Tbl')" class="VieSelector" style="opacity: 0.5"  width="24px" height="24px" viewBox="0 0 612 612">
+                            <g>
+                                <rect y="445.091" width="166.909" height="166.909"/>
+                                <rect x="222.545" y="222.545" width="166.909" height="166.909"/>
+                                <rect y="222.545" width="166.909" height="166.909"/>
+                                <rect x="222.545" width="166.909" height="166.909"/>
+                                <rect width="166.909" height="166.909"/>
+                                <rect x="445.091" y="445.091" width="166.909" height="166.909"/>
+                                <rect x="222.545" y="445.091" width="166.909" height="166.909"/>
+                                <rect x="445.091" width="166.909" height="166.909"/>
+                                <rect x="445.091" y="222.545" width="166.909" height="166.909"/>
+                            </g>
+                        </svg>
+                        <svg id="Tbl" onclick="closeID('BlockData');openID('TableData'); DifOpasity('Tbl','Bl');" class="VieSelector" width="24px" height="24px" viewBox="0 0 612 612" >
+                            <g>
+                                <path d="M604.267,194.727c4.257,0,7.733-3.644,7.733-7.733v-40.169c0-4.256-3.283-7.733-7.733-7.733H7.733
+                                        c-4.256,0-7.733,3.644-7.733,7.733v40.169c0,4.256,3.283,7.733,7.733,7.733H604.267z"/>
+                                <path d="M0,326.084c0,4.256,3.283,7.733,7.733,7.733h596.533c4.256,0,7.733-3.645,7.733-7.733v-40.169
+                                        c0-4.284-3.283-7.733-7.733-7.733H7.733c-4.256,0-7.733,3.645-7.733,7.733V326.084z"/>
+                                <path d="M0,465.175c0,4.256,3.283,7.733,7.733,7.733h596.533c4.256,0,7.733-3.645,7.733-7.733v-40.169
+                                        c0-4.256-3.283-7.732-7.733-7.732H7.733c-4.256,0-7.733,3.644-7.733,7.732V465.175z"/>
+                            </g>
+                        </svg>
+                        
+                </div>               
+                <div id="DisplayData">
+                    
+                    <table id="TableData">
+                        <tr>
+                            <td class="Autor">Автор</td>
+                            <td class="Rang">Должность</td>
+                            <td class="TypeOfActivity">Вид деятельности</td>
+                            <td class="Critery">Критерий</td>
+                            <td class="Date">Дата добавления</td>
+                            <td class="Status">Состояние</td>
+                            <td class="Points">Баллы</td></tr>
+                        <tr>
+                            <td>1</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                        <tr>
+                            <td>2</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                        <tr>
+                            <td>3</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                        <tr>
+                            <td>4</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                        <tr>
+                            <td>5</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                        <tr>
+                            <td>6</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                        <tr>
+                            <td>7</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                        <tr>
+                            <td>8</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                        <tr>
+                            <td>9</td><td>dasdsa</td><td>S312</td><td>3132</td><td>3132</td><td>3132</td><td>3132</td>
+                        </tr>
+                    </table>
+                    <div id="BlockData">
+                        <div class="DataArticle GreenBorder">
+                            
+                        </div>
+                        <div class="DataArticle YellowBorder">
+                            
+                        </div>
+                        <div class="DataArticle RedBorder">
+                            
+                        </div>
+                        <div class="DataArticle YellowBorder">
+                            
+                        </div>
+                        <div class="DataArticle RedBorder">
+                            
+                        </div>
+                        <div class="DataArticle GreenBorder">
+                            
+                        </div>                          
+                        <div class="DataArticle YellowBorder">
+                            
+                        </div>
+                        <div class="DataArticle GreenBorder">
+                            
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
